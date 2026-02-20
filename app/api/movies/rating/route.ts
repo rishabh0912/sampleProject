@@ -1,19 +1,19 @@
 export async function POST(request: Request) {
     try {
-        const {movieId, rating} = await request.json();
+        const {movieId, score} = await request.json();
 
         const token = localStorage.getItem("authToken");
         
         if (!token) {
             return Response.json({ error: "Unauthorized" }, { status: 401 });
         }
-        const response = await fetch("https://your-external-api.com/submit-rating", {
+        const response = await fetch("http://localhost:5048/rating", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
             },
-            body: JSON.stringify({ movieId, rating })
+            body: JSON.stringify({ movieId, score })
         });
         if (!response.ok) {
             return Response.json({ error: "Failed to submit rating" }, { status: response.status });

@@ -1,6 +1,6 @@
 import React from "react";
 
-export function MovieDetails({ movie, setSelectedMovie, loggedIn }: { movie: { id: number; title: string; year: number; genre: string[]; rating: number; poster: string; synopsis: string, director: string, cast: string[], musicDirector: string, numberOfReviews: number }, setSelectedMovie: any, loggedIn: boolean }) {
+export function MovieDetails({ movie, setSelectedMovie, loggedIn }: { movie: { id: number; title: string; year: number; genres: string[]; averageRating: number; posterUrl: string; description: string, director: string, casts: string[], musicDirector: string, numberOfReviews: number }, setSelectedMovie: any, loggedIn: boolean }) {
 
     const [userRating, setUserRating] = React.useState<number>(0);
     const [submitting, setSubmitting] = React.useState(false);
@@ -12,7 +12,7 @@ export function MovieDetails({ movie, setSelectedMovie, loggedIn }: { movie: { i
         try {
             const response = await fetch("/api/movies/rating", {
                 method: "POST",
-                body: JSON.stringify({ movieId: movie.id, rating: userRating })
+                body: JSON.stringify({ movieId: movie.id, score: userRating })
             });
             if (!response.ok) {
                 throw new Error("Failed to submit rating");
@@ -45,14 +45,14 @@ export function MovieDetails({ movie, setSelectedMovie, loggedIn }: { movie: { i
                 boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
                 color: "black",
             }}>
-                <img src={movie.poster} alt={movie.title} style={{ width: "100%", height: "300px", borderRadius: "4px", marginBottom: "12px" }} />
+                <img src={movie.posterUrl} alt={movie.title} style={{ width: "100%", height: "300px", borderRadius: "4px", marginBottom: "12px" }} />
                 <p style={{ fontWeight: "bold", fontSize: "20px", textAlign: "center" }}>{movie.title}</p>
                 <p>Year: {movie.year}</p>
-                <p>Genre: {movie.genre}</p>
-                <p>Rating: {movie.rating} ({movie.numberOfReviews})</p>
-                <p>Synopsis: {movie.synopsis}</p>
+                <p>Genre: {movie.genres}</p>
+                <p>Rating: {movie.averageRating} ({movie.numberOfReviews})</p>
+                <p>description: {movie.description}</p>
                 <p>Director: {movie.director}</p>
-                <p>Cast: {movie.cast.join(", ")}</p>
+                <p>Cast: {movie.casts.join(", ")}</p>
                 <p>Music Director: {movie.musicDirector}</p>
                 <div style={{ marginTop: "12px", backgroundColor: "#f9f9f9", padding: "8px", borderRadius: "4px", textAlign: "center", fontSize: "12px" }}>
                     {loggedIn ? (

@@ -1,7 +1,7 @@
 export async function POST(request: Request) {
     try{const { username, password } = await request.json();
 
-    const response = await fetch("https://jsonplaceholder.typicode.com/users", {
+    const response = await fetch("http://localhost:5073/auth/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

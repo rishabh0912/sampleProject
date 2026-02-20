@@ -1,13 +1,13 @@
 export function MoviesList({ movies, setSelectedMovie}: { movies: { id: number;
     title: string;
     year: number;
-    genre: string;
-    rating: number;
-    poster: string;
-    cast: string[];
+    genres: string;
+    averageRating: number;
+    posterUrl: string;
+    casts: string[];
     director: string;
     musicDirector: string;
-    synopsis: string;
+    description: string;
     numberOfReviews: number }[], 
     selectedMovie: any, 
     setSelectedMovie: any }) {
@@ -37,7 +37,7 @@ export function MoviesList({ movies, setSelectedMovie}: { movies: { id: number;
                         }}
                         onClick={()=>setSelectedMovie(movie)}>
                     <img
-                        src={movie.poster}
+                        src={movie.posterUrl}
                         alt={movie.title}
                         style={{ 
                             width: "100%", 
@@ -47,8 +47,8 @@ export function MoviesList({ movies, setSelectedMovie}: { movies: { id: number;
                             }}    
                     />
                     <h3 style={{ fontWeight: "bold" }}>{movie.title}</h3>
-                    <p>{movie.cast.join(",")}</p>
-                    <p style={{marginTop: "8px"}}>Rating: {movie.rating} ({movie.numberOfReviews})</p>
+                    <p>{movie.casts.join(",")}</p>
+                    <p style={{marginTop: "8px"}}>Rating: {movie.averageRating} ({movie.numberOfReviews})</p>
                 </div>  
                 ))}
                 </div>

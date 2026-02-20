@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import {movies} from "../../lib/constants";
 import { MoviesList } from "./MoviesList";
 import { MovieDetails } from "./MovieDetails";
 import { Login } from "./Login";
@@ -11,15 +10,15 @@ import { Pagination } from "./Pagination";
 
 function HomePage() {
     const [showLogin, setShowLogin] = useState(false);
-    const [selectedMovie, setSelectedMovie] = useState<{ id: number; title: string; year: number; genre: string[]; rating: number; poster: string; synopsis: string; director: string; cast: string[]; musicDirector: string; numberOfReviews: number } | null>(null);
+    const [selectedMovie, setSelectedMovie] = useState<{ id: number; title: string; year: number; genres: string[]; averageRating: number; posterUrl: string; description: string; director: string; casts: string[]; musicDirector: string; numberOfReviews: number } | null>(null);
     const [username, setUsername] = useState("");
     const [loggedin, setLoggedin] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
 
-    // const [movies, setMovies] = useState([]);
-    // const [loading, setLoading] = useState(true);
-    // const [error, setError] = useState("");
+    const [movies, setMovies] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     const totalPages = Math.ceil(movies.length / itemsPerPage);
 
@@ -27,21 +26,21 @@ function HomePage() {
     const endIndex = startIndex + itemsPerPage;
     const currentMovies = movies.slice(startIndex, endIndex);
 
-//     useEffect(() => {
-//     const fetchMovies = async () => {
-//       setLoading(true);
-//       setError("");
-//       try {
-//         const response = await axios.get("https://your-external-api.com/movies");
-//         setMovies(response.data); // Adjust if your API response structure is different
-//       } catch (err) {
-//         setError("Failed to fetch movies.");
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-//     fetchMovies();
-//   }, []);
+    useEffect(() => {
+    const fetchMovies = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const response = await axios.get("http://localhost:5134/movies");
+        setMovies(response.data); // Adjust if your API response structure is different
+      } catch (err) {
+        setError("Failed to fetch movies.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMovies();
+  }, []);
   
     return (
         <div style={{ 
