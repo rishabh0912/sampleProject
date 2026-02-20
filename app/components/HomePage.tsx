@@ -107,7 +107,7 @@ function HomePage() {
             {MoviesList({ 
                 movies: currentMovies, 
                 selectedMovie, 
-                setSelectedMovie 
+                setSelectedMovie,
                 })
             }
             
@@ -115,6 +115,7 @@ function HomePage() {
                 <MovieDetails 
                     movie={selectedMovie} 
                     setSelectedMovie={setSelectedMovie} 
+                    loggedIn={loggedin}
                 />
             }
             

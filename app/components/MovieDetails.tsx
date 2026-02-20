@@ -1,4 +1,28 @@
-export function MovieDetails({ movie, setSelectedMovie }: { movie: { id: number; title: string; year: number; genre: string[]; rating: number; poster: string; synopsis: string, director: string, cast: string[], musicDirector: string, numberOfReviews: number }, setSelectedMovie: any }) {
+import React from "react";
+
+export function MovieDetails({ movie, setSelectedMovie, loggedIn }: { movie: { id: number; title: string; year: number; genre: string[]; rating: number; poster: string; synopsis: string, director: string, cast: string[], musicDirector: string, numberOfReviews: number }, setSelectedMovie: any, loggedIn: boolean }) {
+
+    const [userRating, setUserRating] = React.useState<number>(0);
+    const [submitting, setSubmitting] = React.useState(false);
+    const [submitMsg, setSubmitMsg] = React.useState("");
+
+    const handleRatingSubmit = async () => {
+        setSubmitting(true);
+        setSubmitMsg("");
+        try {
+            const response = await fetch("/api/movies/rating", {
+                method: "POST",
+                body: JSON.stringify({ movieId: movie.id, rating: userRating })
+            });
+            if (!response.ok) {
+                throw new Error("Failed to submit rating");
+            }
+            setSubmitMsg("Rating submitted! Thank you.");
+        } catch (err: any) {
+            setSubmitMsg(err.message || "Error submitting rating");
+        }
+        setSubmitting(false);
+    };
 
     return (
         <div style={{
@@ -30,21 +54,47 @@ export function MovieDetails({ movie, setSelectedMovie }: { movie: { id: number;
                 <p>Director: {movie.director}</p>
                 <p>Cast: {movie.cast.join(", ")}</p>
                 <p>Music Director: {movie.musicDirector}</p>
-
+                <div style={{ marginTop: "12px", backgroundColor: "#f9f9f9", padding: "8px", borderRadius: "4px", textAlign: "center", fontSize: "12px" }}>
+                    {loggedIn ? (
+                        <>
+                            <div style={{ marginBottom: "8px" }}>Rate this movie:</div>
+                            <select value={userRating} onChange={e => setUserRating(Number(e.target.value))} style={{ marginRight: "8px" }}>
+                                <option value={0}>Select</option>
+                                <option value={1}>1</option>
+                                <option value={2}>2</option>
+                                <option value={3}>3</option>
+                                <option value={4}>4</option>
+                                <option value={5}>5</option>
+                                <option value={6}>6</option>
+                                <option value={7}>7</option>
+                                <option value={8}>8</option>
+                                <option value={9}>9</option>
+                                <option value={10}>10</option>
+                            </select>
+                            <button onClick={handleRatingSubmit} disabled={submitting || userRating === 0} style={{ padding: "4px 12px", borderRadius: "4px", border: "none", background: "#007bff", color: "white", cursor: "pointer" }}>
+                                {submitting ? "Submitting..." : "Submit Rating"}
+                            </button>
+                            {submitMsg && <div style={{ marginTop: "8px", color: submitMsg.includes("Thank") ? "green" : "red" }}>{submitMsg}</div>}
+                        </>
+                    ) : (
+                        "Please log in to submit your review."
+                    )}
+                </div>
             </div>
-                            <button style={{ 
-                            marginTop: "12px", 
-                            padding: "8px 16px", 
-                            background: "#f9f9f9",
-                            backgroundColor: "#007bff", 
-                            color: "white", 
-                            border: "none", 
-                            borderRadius: "4px", 
-                            cursor: "pointer"}} 
-                            onClick={() => setSelectedMovie(null)}
-                >
-                    Close
-                </button>
+            <button style={{
+                marginTop: "12px",
+                padding: "8px 16px",
+                background: "#f9f9f9",
+                backgroundColor: "#007bff",
+                color: "white",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer"
+            }}
+                onClick={() => setSelectedMovie(null)}
+            >
+                Close
+            </button>
         </div>
     )
 }

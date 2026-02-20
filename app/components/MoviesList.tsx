@@ -1,4 +1,4 @@
-export function MoviesList({ movies, setSelectedMovie }: { movies: { id: number;
+export function MoviesList({ movies, setSelectedMovie}: { movies: { id: number;
     title: string;
     year: number;
     genre: string;
