@@ -2,7 +2,8 @@ export async function POST(request: Request) {
     try {
         const {movieId, score} = await request.json();
 
-        const token = localStorage.getItem("authToken");
+        const token = request.headers.get("Authorization")?.replace("Bearer ", "");
+        console.log("   Token received in API route:", token);
         
         if (!token) {
             return Response.json({ error: "Unauthorized" }, { status: 401 });

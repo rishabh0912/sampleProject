@@ -24,9 +24,7 @@ export function Login({showLogin, setShowLogin, setUsername, setLoggedin}: {show
       }
 
       const data = await response.json();
-      console.log("Login successful:", data);
-
-      localStorage.setItem("authToken", data.token);
+      localStorage.setItem("authToken", data.accessToken);
       
       setShowLogin(false);
       setUsername(username);

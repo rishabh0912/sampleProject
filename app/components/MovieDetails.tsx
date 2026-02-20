@@ -10,8 +10,21 @@ export function MovieDetails({ movie, setSelectedMovie, loggedIn }: { movie: { i
         setSubmitting(true);
         setSubmitMsg("");
         try {
+            const token = localStorage.getItem("authToken"); // Get token from localStorage
+            console.log("Token from localStorage:", token);
+
+            if (!token) {
+                setSubmitMsg("You are not logged in.");
+                setSubmitting(false);
+                return;
+            }
+
             const response = await fetch("/api/movies/rating", {
                 method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` 
+                },
                 body: JSON.stringify({ movieId: movie.id, score: userRating })
             });
             if (!response.ok) {
